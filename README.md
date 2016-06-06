@@ -1,35 +1,37 @@
-robotframework-elasticsearch
-============================
+# robotframework-elasticsearch
 
-ElasticSearch library for RobotFramework
+ElasticSearch library for Robot Framework
 
-# Presentation
-This lib provides basic keywords to interact with elasticsearch in a RobotFramework testsuite.
-It allows to query, count, create or delete an index.
+## Presentation
 
-# Install
+This library provides basic keywords to interact with Elastic Search in a Robot Framework test suite. 
+It allows one to query, count, create or delete an index.
 
+## Install
 
-```
-	> pip install robotframework-elasticsearch
-```
-
-	Or clone the repo and launch this command from the root dir :
-
-```
-	> python setup.py install
-```
-# Example of use
-
-```
-	*** Settings ***
-	Library 	ElasticSearchLib
-
-	*** Testcases ***
-	Number of docs must be equal to 85431
-	    ${count}= 	es count 		localhost		9200    my_index
-	    Should Be Equal    ${count}		85431
+```bash
+pip install robotframework-elasticsearch
 ```
 
-# Doc
-Read the robot formated doc for more information about how to use the keywords : [RF Doc for ElasticsearchLib](http://htmlpreview.github.io/?https://github.com/pagesjaunes/robotframework-elasticsearch/blob/master/doc/ElasticSearchLib.html)
+Or, clone the repository and launch this command from the root directory:
+
+```bash
+python setup.py install
+```
+
+## Example of Use
+
+```robotframework
+*** Settings ***
+Library     ElasticSearchLib
+
+*** Testcases ***
+Number of docs must be equal to 85431
+    ${count} =          es count    localhost   9200    my_index
+    Should Be Equal     ${count}    85431
+```
+
+## Documentation
+
+Read the Robot Framework formatted doc for more information about how to use the keywords:
+* [Robot Framework Documentation for ElasticSearchLib](http://htmlpreview.github.io/?https://github.com/pagesjaunes/robotframework-elasticsearch/blob/master/doc/ElasticSearchLib.html)

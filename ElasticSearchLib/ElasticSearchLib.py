@@ -3,10 +3,11 @@ from elasticsearch import Elasticsearch
 
 class ElasticSearchLib(object):
     """
-    RobotFramework lib for querying an elasticsearch server.
-    It allows to run a query, count docs and manage indices (create, delete)
+    _A Robot Framework library for querying an elasticsearch server_
+    
+    It allows one to run a query, count docs, and manage indices (create, delete)
 
-    requires elasticsearch-py : http://elasticsearch-py.readthedocs.org/en/latest/index.html
+    Requires ``elasticsearch-py``: http://elasticsearch-py.readthedocs.org/en/latest/index.html
 
     = Table of contents =
 
@@ -15,22 +16,28 @@ class ElasticSearchLib(object):
 
     = Usage =
 
-    This library has several keywords : es search, es count, es delete index, es create index.
+    This library has several keywords:
+    
+    - ``Es Search``
+    - ``Es Count``
+    - ``Es Delete Index``
+    - ``Es Create Index``
     """
 
     ROBOT_LIBRARY_VERSION = '1.1'
 
     def es_search(self,p_host,p_port,p_index,p_query):
         """
-        Returns a query result from elastic search
-        The result is the response from elasticsearch as a dictionnary.
+        === Returns a Query Result from Elastic Search ===
+        
+        The result is the response from elastic search as a dictionary.
 
-        {p_host}   Elasticsearch server\n
-        {p_port}   Port of the es server\n
-        {p_index}  Name of the index to query\n
-        {p_query}  Query to run\n
+        - ``p_host`` - Elasticsearch server
+        - ``p_port`` - Port of the es server
+        - ``p_index`` - Name of the index to query
+        - ``p_query`` - Query to run
 
-        | ${res} = | es search | localhost | 9200 | myIndex |  {"query":{"query_string":{"query": "searched value"}}} |
+        | ${res} = | Es Search | localhost | 9200 | myIndex |  {"query": {"query_string": {"query": "searched value"}}} |
         """
         
         # Es client
@@ -38,7 +45,7 @@ class ElasticSearchLib(object):
             param = [{'host':p_host,'port':int(p_port)}]
             es = Elasticsearch(param)
         except Exception:
-            raise AssertionError("Connexion error on %s:%i",p_host,int(p_port))
+            raise AssertionError("Connection error on %s:%i",p_host,int(p_port))
 
         try:
             documents = es.search(body=p_query, index=p_index)
@@ -49,17 +56,18 @@ class ElasticSearchLib(object):
 
     def es_count(self,p_host,p_port,p_index,p_query=None):
         """
-        Returns the number of documents that match a query
+        === Returns the Number of Documents That Match a Query ===
+        
         The result is the response from elastic search. The value is in the "count" field of the response.
 
-        {p_host}   Elasticsearch server\n
-        {p_port}   Port of the es server\n
-        {p_index}  Name of the index to query\n
-        {p_query}  Query to run\n
+        - ``p_host`` - Elasticsearch server
+        - ``p_port`` - Port of the es server
+        - ``p_index`` - Name of the index to query
+        - ``p_query`` - Query to run
 
-        | ${res} = | es count | localhost | 9200 | myIndex |  {"query":{"query_string":{"query": "searched value"}}} |
+        | ${res} = | Es Count | localhost | 9200 | myIndex |  {"query": {"query_string": {"query": "searched value"}}} |
 
-        ${res} contains the number of docs
+        ``${res}`` contains the number of docs
         """
 
         # Es client
@@ -67,7 +75,7 @@ class ElasticSearchLib(object):
             param = [{'host':p_host,'port':int(p_port)}]
             es = Elasticsearch(param)
         except Exception:
-            raise AssertionError("Connexion error on %s:%i",p_host,int(p_port))
+            raise AssertionError("Connection error on %s:%i",p_host,int(p_port))
 
         try:
             result = es.count(index=p_index, body=p_query)
@@ -78,13 +86,13 @@ class ElasticSearchLib(object):
 
     def es_delete_index(self,p_host,p_port,p_index):
         """
-        Deletes an index
+        === Deletes an Index ===
 
-        {p_host}   Elasticsearch server\n
-        {p_port}   Port of the es server\n
-        {p_index}  Name of the index to remove\n
+        - ``p_host`` - Elasticsearch server
+        - ``p_port`` - Port of the es server
+        - ``p_index`` - Name of the index to remove
 
-        | ${res} = | es delete index | localhost | 9200 | myIndex |
+        | ${res} = | Es Delete Index | localhost | 9200 | myIndex |
         """
 
         # Es client
@@ -92,7 +100,7 @@ class ElasticSearchLib(object):
             param = [{'host':p_host,'port':int(p_port)}]
             es = Elasticsearch(param)
         except Exception:
-            raise AssertionError("Connexion error on %s:%i",p_host,int(p_port))
+            raise AssertionError("Connection error on %s:%i",p_host,int(p_port))
 
         try:
             es.indices.delete(index=p_index)
@@ -101,15 +109,15 @@ class ElasticSearchLib(object):
 
     def es_create_index(self,p_host,p_port,p_index,p_mapping=None):
         """
-        Creates an index
+        === Creates an Index ===
 
-        {p_host}        Elasticsearch server\n
-        {p_port}        Port of the es server\n
-        {p_index}       Name of the index to create\n
-        {p_mapping}     (optional) Dictionnary containing a custom mapping\n
+        - ``p_host`` - Elasticsearch server
+        - ``p_port`` - Port of the es server
+        - ``p_index`` - Name of the index to create
+        - ``p_mapping`` - (optional) Dictionary containing a custom mapping
 
-        | ${res} = | es create index | localhost | 9200 | myIndex |
-        | ${res} = | es create index | localhost | 9200 | myIndex | CustomDicMapping |
+        | ${res} = | Es Create Index | localhost | 9200 | myIndex |
+        | ${res} = | Es Create Index | localhost | 9200 | myIndex | CustomDictMapping |
         """
 
         # Es client
@@ -117,7 +125,7 @@ class ElasticSearchLib(object):
             param = [{'host':p_host,'port':int(p_port)}]
             es = Elasticsearch(param)
         except Exception:
-            raise AssertionError("Connexion error on %s:%i",p_host,int(p_port))
+            raise AssertionError("Connection error on %s:%i",p_host,int(p_port))
 
         try:
             es.indices.create(index=p_index,body=p_mapping)
@@ -127,16 +135,18 @@ class ElasticSearchLib(object):
 
     def es_index(self,p_host,p_port,p_index,p_doctype,p_docid,p_document):
         """
-        Indexes a document on an elasticsearch index according to a doctype and a docid
+        === Indexes a Document by Doctype and Docid ===
+        
+        Indexes a Document on an elasticsearch index according to a doctype and a docid
 
-        {p_host}   Elasticsearch server\n
-        {p_port}   Port of the es server\n
-        {p_index}  Name of the index to query\n
-        {p_doctype}  type of the document to index\n
-        {p_docid}     Id of the document to index\n
-        {p_document}  Document to index\n
+        - ``p_host`` - Elasticsearch server
+        - ``p_port`` - Port of the es server
+        - ``p_index`` - Name of the index to query
+        - ``p_doctype`` - Type of the document to index
+        - ``p_docid`` - Id of the document to index
+        - ``p_document`` - Document to index
 
-        | es index | localhost | 9200 | myIndex | theDocType | id_457891 | {"adress":{"street":"myAdress", "city":"Wow city"}} |
+        | es index | localhost | 9200 | myIndex | theDocType | id_457891 | {"address": {"street": "myAddress", "city":"Wow city"}} |
         """
         
         # Es client
@@ -144,7 +154,7 @@ class ElasticSearchLib(object):
             param = [{'host':p_host,'port':int(p_port)}]
             es = Elasticsearch(param)
         except Exception:
-            raise AssertionError("Connexion error on %s:%i",p_host,int(p_port))
+            raise AssertionError("Connection error on %s:%i",p_host,int(p_port))
 
         try:
             es.index(doc_type=p_doctype, id=p_docid, body=p_document, index=p_index)
